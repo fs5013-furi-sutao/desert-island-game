@@ -1,3 +1,4 @@
+package jp.boocamp.desertisland.setting;
 
 
 public class Config {

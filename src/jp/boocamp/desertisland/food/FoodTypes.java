@@ -1,3 +1,4 @@
+package jp.boocamp.desertisland.food;
 public enum FoodTypes {
     SNAKE("毒蛇", 15, 30, "毒蛇の毒に負けた… "), 
     CANNED_FOOD("漂流物（缶詰）", 30, 50, "歯では開けられなかった。歯が全部折れて出血死…"),
