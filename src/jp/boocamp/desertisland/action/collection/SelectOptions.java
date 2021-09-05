@@ -4,24 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
 
+import jp.boocamp.desertisland.action.EatAction;
+import jp.boocamp.desertisland.action.HearHintAction;
+import jp.boocamp.desertisland.action.NotEatAction;
 import jp.boocamp.desertisland.action.base.Selectable;
 
-public class SelectOptions<E> extends AbstractList<E> implements RandomAccess, Cloneable, java.io.Serializable {
-    private static final long serialVersionUID = 8683452581122892189L;
-
-    private transient List<Selectable> options;
+public class SelectOptions<E> extends AbstractList<E> {
+    private static final int MIN_ITEM_NO = 1;
+    private List<E> options;
 
     public SelectOptions() {
         this.options = new ArrayList<>();
     }
 
-    public SelectOptions<E> append(Selectable option) {
+    public static SelectOptions<Selectable> create() {
+        return new SelectOptions<Selectable>();
+    }
+
+    public List<E> options() {
+        return this.options;
+    }
+
+    public SelectOptions<E> append(E option) {
         this.options.add(option);
         return this;
     }
 
-    public void addAll(Selectable[] optionsArray) {
-        for (Selectable option : optionsArray) {
+    public void addAll(E[] optionsArray) {
+        for (E option : optionsArray) {
             this.options.add(option);
         }
     }
@@ -34,7 +44,35 @@ public class SelectOptions<E> extends AbstractList<E> implements RandomAccess, C
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.options.size();
     }
+
+    public int minItemNo() {
+        return MIN_ITEM_NO;
+    }
+
+    public int maxItemNo() {
+        return size();
+    }
+
+    public String itemNoMinToMax() {
+        return String.format("%d ～ %d", minItemNo(), maxItemNo());
+    }
+
+    public static SelectOptions<Selectable> generateMainOptions() {
+        return create()
+            .append(new EatAction())
+            .append(new NotEatAction())
+            .append(new HearHintAction());
+    }
+
+    public static SelectOptions<Selectable> generateOptionsAfterHint() {
+        return create()
+            .append(new EatAction())
+            .append(new NotEatAction());
+    }
+
+	public Selectable itemNoParseToOption(int itemNo) {
+		return (Selectable) this.options.get(itemNo - 1);
+	}
 }
